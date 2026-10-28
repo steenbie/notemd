@@ -1,0 +1,35 @@
+[package]
+name = "nimblenote-rs"
+version = "1.0.0"
+edition = "2021"
+description = "Simple keyboard-driven note taking for Windows, written in Rust"
+license = "MIT"
+
+[[bin]]
+name = "nimblenote"
+path = "src/main.rs"
+
+[dependencies]
+eframe = { version = "0.37", default-features = false, features = ["default_fonts", "glow", "persistence"] }
+dirs = "7"
+open = "5"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+trash = "5"
+
+[target.'cfg(windows)'.dependencies]
+rfd = "0.17"
+
+[target.'cfg(not(windows))'.dependencies]
+# Needed by eframe/winit on Linux for the dev build; not used on Windows.
+eframe = { version = "0.37", default-features = false, features = ["default_fonts", "glow", "persistence", "x11", "wayland"] }
+
+[build-dependencies]
+winresource = "0.1"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"
